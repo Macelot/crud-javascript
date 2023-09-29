@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro HTML, Boostrap e JS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<!-- Com base neste cadastro criar um cadastro de contatos e colocar o celular
+    Depois vamos criar um link para o whatsApp
+-->
+<body>
+    <div class="container">
+    <form action="">
+        <div class="row">
+            <div class="col-4">
+                Nome:<br>
+                <input type="text" name="" id="nome">
+            </div>
+            <div class="col-4">
+                Alimentação:<br>
+                <input type="text" name="" id="alim">
+            </div>
+            <div class="col-4">
+                Altura:<br>
+                <input type="text" name="" id="altu">
+            </div>
+        </div>
+        <hr>
+
+        <input type="button" class="btn btn-success" value="Adicionar" id="btnAdicionar" onclick="adicionar()">
+        <input type="button" class="btn btn-dark" value="Confirmar" id="btnConfirmar" onclick="confirmar()" style="visibility:hidden">
+        <input type="button" class="btn btn-info" value="Listar" onclick="listar()">
+        <hr>
+    </form>
+    <div id="local"></div>
+    </div>
+    <script>
+        var dinos = [];
+        var idClicado;
+        var dino = new Object();
+        dino.nome = "Tiranossauro";
+        dino.alim = "Carnívoro";
+        dino.altu = "3m";
+        dinos.push(dino);
+
+        dino = new Object();
+        dino.nome = "Braquissauro";
+        dino.alim = "Herbívoro";
+        dino.altu = "1m";
+        dinos.push(dino);
+
+        listar();
+
+        function adicionar(){
+            var dino = new Object();
+            dino.nome = document.getElementById('nome').value;
+            dino.alim = document.getElementById('alim').value;
+            dino.altu = document.getElementById('altu').value;
+            dinos.push(dino);
+            listar();
+        }
+        function listar(){
+            var dados = document.getElementById('local').innerHTML="";
+            var conteudo = "<table class='table table-hover'>";
+            conteudo+="<thead><tr> <th>Nome</th> <th>Alimentação</th> <th>Altura</th> <th>Operações</th></tr></thead> ";
+            conteudo+="<tbody>";
+            for (let index = 0; index < dinos.length; index++) {
+                const element = dinos[index];
+                conteudo+="<tr>";
+                conteudo+="<td>"+element.nome+"</td>";
+                conteudo+="<td>"+element.alim+"</td>";
+                conteudo+="<td>"+element.altu+"</td>";
+                conteudo+="<td>"+'<input type="button" class="btn btn-danger" value="Apagar" onclick="apagar('+index+')">';
+                conteudo+='<input type="button" class="btn btn-warning" value="Editar" onclick="editar('+index+')">'+"</td>";
+                conteudo+="</tr>";
+            }
+            conteudo+="</tbody>";
+            conteudo+="<table>";
+            document.getElementById('local').innerHTML=conteudo;
+        }
+        function apagar(id){
+            console.log(id);
+            if(confirm("Tem certeza?"))
+                dinos.splice(id,1);
+            listar();    
+        }
+        function editar(id){
+            var dino = dinos[id];
+            idClicado = id;
+            document.getElementById('nome').value = dino.nome; 
+            document.getElementById('alim').value = dino.alim; 
+            document.getElementById('altu').value = dino.altu;
+            document.getElementById('btnAdicionar').disabled=true;
+            document.getElementById('btnConfirmar').style.visibility="visible";
+        }
+        function confirmar(){
+            var dino = new Object();
+            dino.nome = document.getElementById('nome').value;
+            dino.alim = document.getElementById('alim').value;
+            dino.altu = document.getElementById('altu').value;
+            dinos[idClicado] = dino;
+            listar();
+        }
+    </script>
+</body>
+</html>
